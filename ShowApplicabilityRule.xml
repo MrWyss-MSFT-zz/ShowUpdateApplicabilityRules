@@ -16,7 +16,7 @@
   </ImagesDescription>
   <Executable>
     <FilePath>"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"</FilePath>
-    <Parameters>-ExecutionPolicy ByPass -File "E:\SCCM\AdminConsole\XmlStorage\Tools\Show-ApplicabilityRule.ps1" -SQLServer "change.here.local" -SQLDBName "SUSDB" -UpdateSearchString "##SUB:LocalizedDisplayName##" -UpdateID "##SUB:CI_UniqueID##" -RevisionNumber "##SUB:RevisionNumber##" </Parameters>
+    <Parameters>-ExecutionPolicy ByPass -File "path to your admin console %SMS_ADMIN_UI_PATH%\..\..\ \XmlStorage\Tools\Show-ApplicabilityRule.ps1" -SQLServer "change.here.local" -SQLDBName "SUSDB" -UpdateSearchString "##SUB:LocalizedDisplayName##" -UpdateID "##SUB:CI_UniqueID##" -RevisionNumber "##SUB:RevisionNumber##" </Parameters>
   </Executable>
 </ActionDescription>
 

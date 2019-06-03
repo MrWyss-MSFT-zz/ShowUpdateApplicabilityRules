@@ -1,10 +1,10 @@
 
-# Show Applicabiltiy Rule
+# Show Update Applicabilty Rule
 
 # Introduction
 
 Windows Updates have Applicability Rules, that decide whether an update is installable or is installed. This information can be very useful in Troubleshooting cases and to understand why a updates report back installed or why a updates is not installing.
-These Rules are defined in the Update.xml per Update. The Update.xml is stored in the WSUS Update Database in the RootElementXmlCompressed filed of the table tbxml.  An update can be bundled. Therefore the bundled update xml needs to be looked at.
+These Rules are defined in the Update.xml per Update. The Update.xml is stored in the WSUS Update Database in the RootElementXmlCompressed filed of the table tbxml. An update can be bundled. Therefore the bundled update xml needs to be looked at.
 Show-ApplicabilityRule.ps1 will help you to extract the Applicability Rule.
 
 ## Script Stand alone
@@ -55,4 +55,4 @@ Foreach ($Guid in $Guids) {
 
 # Contribute
 
-Anyone just ping me
+Let me know, create issues or PR's
