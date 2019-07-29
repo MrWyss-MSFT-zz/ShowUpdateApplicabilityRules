@@ -16,7 +16,7 @@
   </ImagesDescription>
   <Executable>
     <FilePath>"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe"</FilePath>
-    <Parameters>-ExecutionPolicy ByPass -File "YOUR SCCM ADMIN CONSOLE LOCATION AdminConsole\XmlStorage\Tools\Show-ApplicabilityRule.ps1" -SQLServer "FQDN OF YOUR SQL SERVER" -SQLDBName "SUSDB" -UpdateID "##SUB:CI_UniqueID##" -RevisionNumber "##SUB:RevisionNumber##" </Parameters>
+    <Parameters>-ExecutionPolicy ByPass -File "YOUR SCCM ADMIN CONSOLE LOCATION AdminConsole\XmlStorage\Tools\Show-ApplicabilityRule.ps1" -SQLServer "change.here.local" -SQLDBName "SUSDB" -UpdateSearchString "##SUB:LocalizedDisplayName##" </Parameters>
   </Executable>
 </ActionDescription>
 

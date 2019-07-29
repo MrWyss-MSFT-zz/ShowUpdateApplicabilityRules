@@ -13,8 +13,9 @@
 .NOTES  
     File Name   : Show-ApplicabilityRule.ps1
     Author      : marius.wyss@microsoft.com
-    Version     : 2.0
-    ChangeLog   : 27. May 2019 - V2.0 - Added TreeView thanks to Ivan Yankulov https://www.sptrenches.com/2017/08/build-treevie-xml-powershell.html
+    Version     : 3.0
+    ChangeLog   : 29. Jul 2019 - V3.0 - Introduced Parameter Set to avoid empty UpdateSarchstring or emtpy UpdateID and RevisionNumber
+                  27. May 2019 - V2.0 - Added TreeView thanks to Ivan Yankulov https://www.sptrenches.com/2017/08/build-treevie-xml-powershell.html
                   27. May 2019 - V1.1 - minor refactoring and invoke-sqlcmd2 got error handling to avoid open connections
                   26. May 2019 - V1.0 - initial version
 
@@ -24,17 +25,17 @@
     IF THIS CODE AND INFORMATION IS MODIFIED, THE ENTIRE RISK OF USE OR RESULTS IN
     CONNECTION WITH THE USE OF THIS CODE AND INFORMATION REMAINS WITH THE USER.
 #>
+[CmdletBinding(DefaultParametersetName='Script')] 
+param( 
+    # Use UpdateSearchString or UpdateID and RevisionNumber to find the Update
+    [Parameter(Position=0,Mandatory=$true)] [string]$SQLServer, # e.g. = sqlserver.domain.com
+    [Parameter(Position=1,Mandatory=$true)] [string]$SQLDBName, # e.g. = SUSDB
+    [Parameter(ParameterSetName='Script',Mandatory=$true)][string]$UpdateSearchString, # e.g. = "%Office 365 Client Update - First Release for Current Channel Version 1706 for x64 based Edition (Build 8229.2056)%",     
+    [Parameter(ParameterSetName='Extension',Mandatory=$true)][string]$UpdateID,
+    [Parameter(ParameterSetName='Extension',Mandatory=$true)][string]$RevisionNumber
+)
 
-
-param (
-    # Use UpdateSearchString or UpdateID and RevisionNumber to find the Update     
-    [Parameter(Mandatory = $true)]  [string]$SQLServer, # e.g. = sqlserver.domain.com            
-    [Parameter(Mandatory = $true)]  [string]$SQLDBName, # e.g. = SUSDB  
-    [Parameter(Mandatory = $false)] [string]$UpdateSearchString, # e.g. = "%Office 365 Client Update - First Release for Current Channel Version 1706 for x64 based Edition (Build 8229.2056)%",
-    [Parameter(Mandatory = $false)] [string]$UpdateID,
-    [Parameter(Mandatory = $false)] [string]$RevisionNumber
-) 
-
+$ParamSetName = $PsCmdLet.ParameterSetName
 Function Invoke-Sqlcmd2 {
     [CmdLetBinding()]
     Param
@@ -230,17 +231,20 @@ function Add-NodesToTreeview($xElement, $fNode) {
 #region Business Logic
 Try {
     
-    if ($UpdateID -and $RevisionNumber) {
+    if ($ParamSetName -eq "Extension") {
         Write-Host "Using UpdateID and Revision"
         $Update = Get-UpdateDetails -UpdateID $UpdateID -RevisionNumber $RevisionNumber
      
     }
-    else {
+    elseif ($ParamSetName -eq "Script") {
         Write-Host "Using SearchString"
         $Update = Get-UpdateIDAndRevision -UpdateSearchString $UpdateSearchString
         [string]$UpdateID = $Update.UpdateID
         [string]$RevisionNumber = $Update.RevisionNumber
+    } else {
+        Write-Host "No Parameters given"
     }
+
     
     $UpdateXML = Get-UpdateXML -UpdateID $UpdateID -UpdateRevision $RevisionNumber
     $Ar = Get-ApplicabilityRules -Update $UpdateXML
