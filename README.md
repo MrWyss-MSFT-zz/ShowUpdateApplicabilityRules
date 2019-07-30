@@ -19,6 +19,8 @@ Show-ApplicabilityRule.ps1 will help you to extract the Applicability Rule.
 
 ![Alt text](res/sccm_extension.gif "SCCM Extension")
 
+* download the two powershell script and run
+
 ```powershell
 ./Install-Extension.ps1
 ```
