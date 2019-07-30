@@ -19,25 +19,25 @@ Show-ApplicabilityRule.ps1 will help you to extract the Applicability Rule.
 
 ![Alt text](res/sccm_extension.gif "SCCM Extension")
 
-* Copy all xml's and ps1's to a folder on the machine where you have the console installed
-* Change edit the line with admin console path sql server fqdn and db name in ShowApplicabilityRule.xml and ShowApplicabilityRule_All_Windows_10_Updates.xml
-* Run install.ps1 script as an admin
+```powershell
+./Install-Extension.ps1
+```
+
 * Restart the Console
 
 ## SCCM Console Extension uninstallation
 
 ```powershell
-Get-ChildItem -Path "$($ENV:SMS_ADMIN_UI_PATH)\..\..\XmlStorage\Extensions\Actions" -Recurse -Filter "ShowApplicabilityRule*.xml" | Remove-Item 
-Get-ChildItem -Path "$($ENV:SMS_ADMIN_UI_PATH)\..\..\XmlStorage\Tools" -Recurse -Filter "Show-ApplicabilityRule.ps1" | Remove-Item
+./Install-Extension.ps1 -Uninstall
 ```
 
 # TODO
 
 - [ ] replace temp file workaround in powershell script
-- [x] uninstallation routine script
-- [ ] Autdetection of SUS SQL and DB
-- [x] Test with WID (Windows Internal Database)
 - [ ] Test in Multi SUS Environment
+- [ ] Autdetection of SUS SQL and DB
+- [x] uninstallation routine script
+- [x] Test with WID (Windows Internal Database)
 - [x] Better view of the Applicability Rule
 - [x] SQL Command Error Handling
 
