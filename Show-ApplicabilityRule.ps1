@@ -30,6 +30,7 @@ param(
     # Use UpdateSearchString or UpdateID and RevisionNumber to find the Update
     [Parameter(Position=0,Mandatory=$true)] [string]$SQLServer, # e.g. = sqlserver.domain.com
     [Parameter(Position=1,Mandatory=$true)] [string]$SQLDBName, # e.g. = SUSDB
+	[Parameter(Position=2,Mandatory=$false,HelpMessage="Export Applicability Rule to a file instead of showing the TreeView Window")] [string]$ExportToFile=$null, # e.g. = D:\temp\apprule.xml
     [Parameter(ParameterSetName='Script',Mandatory=$true)][string]$UpdateSearchString, # e.g. = "%Office 365 Client Update - First Release for Current Channel Version 1706 for x64 based Edition (Build 8229.2056)%",     
     [Parameter(ParameterSetName='Extension',Mandatory=$true)][string]$UpdateID,
     [Parameter(ParameterSetName='Extension',Mandatory=$true)][string]$RevisionNumber
@@ -247,6 +248,20 @@ Try {
 
     
     $UpdateXML = Get-UpdateXML -UpdateID $UpdateID -UpdateRevision $RevisionNumber
+	if($ExportToFile)
+	{
+		write-host ("Exporting applicability rule to {0}" -f $ExportToFile)
+		try
+		{
+			$UpdateXML.Save($ExportToFile)
+			exit 0
+		}
+		catch 
+		{
+			write-host ("Error occoured while exporting applicability rule. Error: {0}" -f $_.Exception.Message)
+			exit 1
+		}		
+	}
     $Ar = Get-ApplicabilityRules -Update $UpdateXML
 
     #region ShowDialog  
